@@ -1,0 +1,35 @@
+---
+
+- include: install-centos.yml
+  when: ansible_os_family == "RedHat"
+  tags:
+    - kube-deps
+
+- include: install-ubuntu.yml
+  when: ansible_os_family == "Debian"
+  tags:
+    - kube-deps
+
+- include: configure.yml
+  tags:
+    - kube-deps
+
+- include: install-kubectl.yml
+  tags:
+    - kubectl
+
+- include: init-cluster.yml
+  tags:
+    - init-cluster
+
+- include: get-join-cmd.yml
+  tags:
+    - join-cmd
+
+- name: join cluster
+  shell: "{{ hostvars[groups['master'][0]]['join_command'] }} >> node_joined.txt"
+  args:
+    chdir: $HOME
+    creates: node_joined.txt
+  tags:
+    - worker-join

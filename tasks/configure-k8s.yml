@@ -1,0 +1,45 @@
+---
+
+- name: criando a pasta docker no systemd
+  file:
+    path: /etc/systemd/system/docker.service.d
+    state: directory
+    mode: 0755
+
+- name: start Docker
+  systemd:
+    state: started
+    daemon_reload: yes
+    name: docker
+
+- name: garantindo que net.bridge.bridge-nf-call-ip6tables esteja setada como 1
+  sysctl:
+    name: net.bridge.bridge-nf-call-ip6tables
+    value: 1
+    state: present
+
+- name: grantindo net.bridge.bridge-nf-call-iptables esteja setada como 1
+  sysctl:
+    name: net.bridge.bridge-nf-call-iptables
+    value: 1
+    state: present
+
+- name: instalando kubelet e kubeadm
+  yum:
+    name: ['kubelet', 'kubeadm']
+    state: present
+    update_cache: true
+  when: ansible_os_family == "RedHat"
+    
+- name: instalando o kubelet - Ubuntu
+  apt:
+    name: ['kubelet', 'kubeadm']
+    present: true
+    update_cache: true
+  when: ansible_os_family == "Debian"
+
+- name: start kubelet
+  service:
+    name: kubelet
+    enabled: yes
+    state: started

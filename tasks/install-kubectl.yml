@@ -1,0 +1,14 @@
+---
+
+- name: instalando kubectl - CentOS
+  yum:
+    name: kubectl
+    state: present
+  when: ansible_os_family == "RedHat"
+
+- name: instalando kubectl - Ubuntu
+  apt:
+    name: kubectl
+    state: present
+    update_cache: true
+  when: ansible_os_family == "Debian"

@@ -1,0 +1,21 @@
+---
+- hosts: 
+    workers
+    master
+  become: true
+  tags: ['kube-deps']
+  roles:
+    - ansible-role-kubernetes
+    
+- hosts: master
+  become: yes
+  gather_facts: no
+  tags: ['kubectl', 'init-cluster', 'join-cmd']
+  roles:
+    - ansible-role-kubernetes
+  
+- hosts: workers
+  become: yes
+  tags: ['join-cmd']
+  roles:
+    - ansible-role-kubernetes

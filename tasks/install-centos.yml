@@ -43,7 +43,7 @@
       }
       
 - name: disabilita SELinux - CentOS
-  command: setenforce 
+  command: setenforce 0
 
 - name: disabilita SELinux on reboot - CentOS
   selinux:

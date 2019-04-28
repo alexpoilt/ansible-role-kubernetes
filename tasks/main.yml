@@ -10,7 +10,7 @@
   tags:
     - kube-deps
 
-- include: configure.yml
+- include: configure-k8s.yml
   tags:
     - kube-deps
 

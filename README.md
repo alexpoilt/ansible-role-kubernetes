@@ -8,7 +8,7 @@ Example Playbook
 
 It's role have file exemple playbook for instal cluster k8s, you must to use this exemple. 
 
-You must add the group master and workers on your file /etc/hosts:
+You must add the group master and workers on your file /etc/ansible/hosts:
 ```
 ...
 [master]
